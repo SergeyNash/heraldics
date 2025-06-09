@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Crown } from 'lucide-react';
 import Tooltip from './components/Tooltip';
 
@@ -62,10 +62,52 @@ const heraldryData = [
   }
 ];
 
+// Массив изображений гербов
+const heraldryImages = [
+  {
+    src: '/herb.png',
+    alt: 'Основной герб семьи Синяковых',
+    title: 'Основной герб'
+  },
+  {
+    src: '/herb2.png',
+    alt: 'Альтернативный вариант герба семьи Синяковых',
+    title: 'Альтернативный вариант'
+  },
+  {
+    src: '/herb3.png',
+    alt: 'Исторический вариант герба семьи Синяковых',
+    title: 'Исторический вариант'
+  },
+  {
+    src: '/herb4.png',
+    alt: 'Современная интерпретация герба семьи Синяковых',
+    title: 'Современная интерпретация'
+  }
+];
+
 function App() {
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const crestRef = useRef<HTMLDivElement>(null);
+
+  // Автоматическая смена изображений каждые 30 секунд
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      
+      setTimeout(() => {
+        setCurrentImageIndex((prevIndex) => 
+          (prevIndex + 1) % heraldryImages.length
+        );
+        setIsTransitioning(false);
+      }, 300); // Половина времени перехода для плавности
+    }, 30000); // 30 секунд
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleHotspotHover = (id: string, event: React.MouseEvent) => {
     setActiveTooltip(id);
@@ -91,6 +133,16 @@ function App() {
         x: rect.left + rect.width / 2,
         y: rect.top - 10
       });
+    }
+  };
+
+  const handleImageNavigation = (index: number) => {
+    if (index !== currentImageIndex) {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentImageIndex(index);
+        setIsTransitioning(false);
+      }, 300);
     }
   };
 
@@ -132,13 +184,26 @@ function App() {
         >
           {/* Crest Container */}
           <div className="relative">
-            {/* Main Crest Image */}
-            <img 
-              src="/herb.png" 
-              alt="Герб семьи Синяковых" 
-              className="w-full h-auto drop-shadow-2xl rounded-lg"
-              style={{ filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.5))' }}
-            />
+            {/* Main Crest Image with transition */}
+            <div className="relative overflow-hidden rounded-lg">
+              <img 
+                src={heraldryImages[currentImageIndex].src}
+                alt={heraldryImages[currentImageIndex].alt}
+                className={`w-full h-auto drop-shadow-2xl rounded-lg transition-all duration-600 ${
+                  isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                }`}
+                style={{ filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.5))' }}
+              />
+              
+              {/* Image title overlay */}
+              <div className="absolute bottom-4 left-4 right-4">
+                <div className="bg-slate-900/80 backdrop-blur-sm rounded-lg px-3 py-2 border border-amber-400/30">
+                  <p className="font-garamond text-sm md:text-base text-amber-200 text-center">
+                    {heraldryImages[currentImageIndex].title}
+                  </p>
+                </div>
+              </div>
+            </div>
             
             {/* Interactive Hotspots - прозрачность 10% */}
             {heraldryData.map((item) => (
@@ -164,12 +229,42 @@ function App() {
             ))}
           </div>
 
+          {/* Image Navigation Dots */}
+          <div className="flex justify-center mt-6 space-x-3">
+            {heraldryImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handleImageNavigation(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-400/50 ${
+                  index === currentImageIndex
+                    ? 'bg-amber-400 shadow-lg shadow-amber-400/50'
+                    : 'bg-amber-400/30 hover:bg-amber-400/60'
+                }`}
+                aria-label={`Показать ${heraldryImages[index].title}`}
+              />
+            ))}
+          </div>
+
+          {/* Progress bar for auto-transition */}
+          <div className="mt-4 w-full bg-slate-700/50 rounded-full h-1 overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full transition-all duration-1000 ease-linear"
+              style={{
+                width: '100%',
+                animation: 'progress 30s linear infinite'
+              }}
+            />
+          </div>
+
           {/* Instructions */}
           <div className="text-center mt-8 md:mt-12">
-            <p className="font-garamond text-sm md:text-base text-amber-200 italic">
+            <p className="font-garamond text-sm md:text-base text-amber-200 italic mb-2">
               <span className="hidden md:inline">Наведите курсор на золотые точки</span>
               <span className="md:hidden">Коснитесь золотых точек</span>
               {' '}для изучения символики герба
+            </p>
+            <p className="font-garamond text-xs md:text-sm text-amber-300/80">
+              Изображения автоматически меняются каждые 30 секунд
             </p>
           </div>
         </div>
@@ -202,6 +297,14 @@ function App() {
           © {new Date().getFullYear()} Род Синяковых. Наследие поколений.
         </p>
       </footer>
+
+      {/* Custom CSS for progress animation */}
+      <style jsx>{`
+        @keyframes progress {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(0%); }
+        }
+      `}</style>
     </div>
   );
 }
