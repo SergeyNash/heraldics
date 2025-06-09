@@ -134,32 +134,32 @@ function App() {
           <div className="relative">
             {/* Main Crest Image */}
             <img 
-              src="/public/herb.png" 
+              src="/herb.png" 
               alt="Герб семьи Синяковых" 
               className="w-full h-auto drop-shadow-2xl rounded-lg"
               style={{ filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.5))' }}
             />
             
-            {/* Interactive Hotspots - прозрачность 50% */}
+            {/* Interactive Hotspots - прозрачность 10% */}
             {heraldryData.map((item) => (
               <button
                 key={item.id}
-                // Прозрачность установлена на 70% через bg-amber-400/90
-                className="absolute w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full bg-amber-400/90 border-2 border-amber-500/60 hover:bg-amber-400/90 hover:border-amber-400 hover:scale-125 transition-all duration-300 transform -translate-x-1/2 -translate-y-1/2 focus:outline-none focus:ring-4 focus:ring-amber-300/50 group"
+                // Прозрачность установлена на 10% через bg-amber-400/10
+                className="absolute w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full bg-amber-400/10 border-2 border-amber-500/20 hover:bg-amber-400/30 hover:border-amber-400/50 hover:scale-125 transition-all duration-300 transform -translate-x-1/2 -translate-y-1/2 focus:outline-none focus:ring-4 focus:ring-amber-300/30 group"
                 style={item.position}
                 onMouseEnter={(e) => handleHotspotHover(item.id, e)}
                 onMouseLeave={handleHotspotLeave}
                 onTouchStart={(e) => handleMobileTouch(item.id, e)}
                 aria-label={`${item.title}: ${item.description}`}
               >
-                {/* Внутренний градиент с прозрачностью 50% */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-300/50 to-amber-600/50 animate-pulse group-hover:opacity-80"></div>
-                <div className="relative w-full h-full rounded-full bg-gradient-to-br from-amber-400/50 to-amber-700/50 flex items-center justify-center shadow-lg">
-                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-white/80 shadow-inner"></div>
+                {/* Внутренний градиент с прозрачностью 10% */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-300/10 to-amber-600/10 animate-pulse group-hover:opacity-50"></div>
+                <div className="relative w-full h-full rounded-full bg-gradient-to-br from-amber-400/10 to-amber-700/10 flex items-center justify-center shadow-lg">
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-white/30 shadow-inner"></div>
                 </div>
                 
                 {/* Glow effect on hover */}
-                <div className="absolute inset-0 rounded-full bg-amber-400/90 opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-sm scale-150"></div>
+                <div className="absolute inset-0 rounded-full bg-amber-400/20 opacity-0 group-hover:opacity-60 transition-opacity duration-300 blur-sm scale-150"></div>
               </button>
             ))}
           </div>
