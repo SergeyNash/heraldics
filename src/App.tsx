@@ -194,15 +194,6 @@ function App() {
                 }`}
                 style={{ filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.5))' }}
               />
-              
-              {/* Image title overlay */}
-              <div className="absolute bottom-4 left-4 right-4">
-                <div className="bg-slate-900/80 backdrop-blur-sm rounded-lg px-3 py-2 border border-amber-400/30">
-                  <p className="font-garamond text-sm md:text-base text-amber-200 text-center">
-                    {heraldryImages[currentImageIndex].title}
-                  </p>
-                </div>
-              </div>
             </div>
             
             {/* Interactive Hotspots - увеличенная прозрачность */}
@@ -227,6 +218,15 @@ function App() {
                 <div className="absolute inset-0 rounded-full bg-amber-400/60 opacity-0 group-hover:opacity-80 transition-opacity duration-300 blur-sm scale-150"></div>
               </button>
             ))}
+          </div>
+
+          {/* Image title moved below the image */}
+          <div className="mt-4">
+            <div className="bg-slate-900/80 backdrop-blur-sm rounded-lg px-4 py-3 border border-amber-400/30">
+              <p className="font-garamond text-sm md:text-base text-amber-200 text-center">
+                {heraldryImages[currentImageIndex].title}
+              </p>
+            </div>
           </div>
 
           {/* Image Navigation Dots */}
