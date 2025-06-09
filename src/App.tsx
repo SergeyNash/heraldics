@@ -37,7 +37,7 @@ const heraldryData = [
     title: 'Медведь',
     description: 'Сила земли, устойчивость, достоинство, защита семьи',
     // Координаты: левый щитоносец (45% сверху, 8% слева)
-    position: { top: '45%', left: '15%' }
+    position: { top: '25%', left: '15%' }
   },
   {
     id: 'eagle-supporter',
