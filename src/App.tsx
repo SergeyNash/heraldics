@@ -134,7 +134,7 @@ function App() {
           <div className="relative">
             {/* Main Crest Image */}
             <img 
-              src="/herb.png" 
+              src="/public/herb.png" 
               alt="Герб семьи Синяковых" 
               className="w-full h-auto drop-shadow-2xl rounded-lg"
               style={{ filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.5))' }}
