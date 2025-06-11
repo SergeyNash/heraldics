@@ -6,7 +6,7 @@ import Tooltip from './components/Tooltip';
 const heraldryData = [
   {
     id: 'wolf-head',
-    title: 'Голова волька',
+    title: 'Голова волка',
     description: 'Верность и преданность семье, роду и своему слову',
     // Координаты: верхний левый квадрант щита (42% сверху, 35% слева)
     position: { top: '42%', left: '35%' }
